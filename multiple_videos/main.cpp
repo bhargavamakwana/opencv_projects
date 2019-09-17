@@ -28,7 +28,7 @@ static void show_usage(std::string name)
 }
 
 
-static void get_arguments(std::string& PathToFile, const int argc, const char * argv[])
+int get_arguments(std::string& PathToFile, const int argc,char * argv[])
     {
      int c;
      while((c = getopt(argc,argv,"f:"))!=-1)
@@ -37,17 +37,17 @@ static void get_arguments(std::string& PathToFile, const int argc, const char * 
         {
           case 'f':
             if(optarg) PathToFile = optarg;
-            break;
+            return 1;
           default:
             show_usage(argv[0]);
-            break;
+            return -1;
         }
       }
 
       if (c==-1)
       {
         show_usage(argv[0]);
-        return;
+        return -1;
       }
     }
 void RunVideo(const std::string window_name, int video_num, std::string path_to_video)
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
   std::fstream FileRead;
   std::vector<std::string> PathToVideos;
 
-  get_arguments(PathToFile,argc,argv);
+ if(get_arguments(PathToFile,argc,argv)==-1) return -1;
 
   ReadFile(FileRead,PathToFile,PathToVideos);
 
